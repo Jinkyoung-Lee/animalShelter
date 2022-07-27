@@ -1,0 +1,47 @@
+<%= layout('layouts/boilerplate') %>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card shadow">
+                <img src="https://images.unsplash.com/photo-1568043210943-0e8aac4b9734?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                    class="card-img-top" alt="a picture of a cat">
+                <div class="card-body">
+                    <h5 class="card-title py-3">Register</h5>
+                    <form action="/register" method="POST" class="validated-form" novalidate>
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="Username" name="username"
+                                required />
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email"
+                                required />
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                name="password" required />
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <!-- Password confirmation -->
+                        <div class="mb-3">
+                            <label for="passwordConfirm" class="form-label">Password Confirmation</label>
+                            <input type="password" class="form-control" id="passwordConfirm"
+                                placeholder="Password Confirmation" name="passwordConfirm" required />
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-success">Sign Up</button>
+                        </div>
+                    </form>
+                    <div class="mt-2">
+                        <a href="/shelters" class="text-muted font-medium">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,206 @@
+<% layout('layouts/boilerplate') %>
+    <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+        <div class="col">
+            <div class="card shadow-sm">
+                <!-- Image in carousel -->
+            <div id="carouselExampleControls" class="carousel slide card-img-top" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% shelter.images.forEach((image, i) => { %>
+                    <div class="carousel-item <%= i === 0? 'active': '' %> ">
+                        <img id="square-img" src="<%= image.url %>" class="d-block w-100" alt="...">
+                    </div>
+                    <% }) %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+                <div class="card-body">
+                    <!-- Title -->
+                    <h5 class="card-title">
+                        <i class="fa-solid fa-paw"></i>
+                        &nbsp;<%= shelter.title %>
+                    </h5>
+                    <!-- Username -->
+                    <p class="card-text text-muted font-medium">
+                        Posted by. <%= shelter.author.username %>
+                    </p>
+                    <!-- Description -->
+                    <p class="card-text">
+                        <%= shelter.description %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <!-- Phone -->
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-phone"></i>
+                        &nbsp;&nbsp;<%= shelter.phone %>
+                    </li>
+                    <!-- Location -->
+                    <li class="list-group-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        &nbsp;&nbsp;<%= shelter.location %>
+                    </li>
+                    <!-- map -->
+                    <li class="list-group-item">
+                        <div id="map"></div>
+                    </li>
+                </ul>
+                <!-- Edit and Delete button -->
+                <% if (currentUser && shelter.author.equals(currentUser._id)) { %>
+                    <div class="card-body">
+                        <a href="/shelters/<%= shelter._id %>/edit" class="card-link btn btn-primary">Edit</a>
+                        <form class="d-inline" action="/shelters/<%= shelter._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Register animal form: only shown for the signed in users -->
+        <div class="col">
+            <% if (currentUser) { %>
+                <h5>
+                    <i class="fa-solid fa-house-circle-check"></i>
+                    Register an animal to the shelter
+                </h5>
+                <form action="/shelters/<%= shelter._id %>/animals" method="POST" class="validated-form" novalidate>
+                    <!-- Breed -->
+                    <div class="my-3">
+                        <label for="breed" class="form-label">Breed</label>
+                        <input class="form-control" type="text" name="animal[breed]" id="breed" required />
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- Image -->
+                    <div class="my-3">
+                        <label for="image" class="form-label">Image</label>
+                        <!-- <input type="file" name="image" id="image"> -->
+                        <input class="form-control" type="text" name="animal[image]" id="image" required />
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- Sex -->
+                    <div class="my-3">
+                        <p class="form-label">Sex</p>
+                        <input class="form-check-input" type="radio" name="animal[sex]" id="female" value="female"
+                            required />
+                        <label for="female" class="form-check-label">Female</label>
+                        <input class="form-check-input" type="radio" name="animal[sex]" id="male" value="male" required />
+                        <label for="male" class="form-check-label">Male</label>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- Date rescued -->
+                    <div class="my-3">
+                        <label for="dateRescued" class="form-label">Date rescued</label>
+                        <input class="form-control" type="date" name="animal[dateRescued]" id="dateRescued" required />
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- Location rescued -->
+                    <div class="my-3">
+                        <label for="location" class="form-label">Location rescued</label>
+                        <input class="form-control" type="text" name="animal[locationRescued]" id="location" required />
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- Age -->
+                    <div class="my-3">
+                        <label for="age" class="form-label">Age</label>
+                        <input class="form-control" type="text" name="animal[age]" id="age" required />
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- Description -->
+                    <div class="my-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" name="animal[description]" id="description" rows="5"
+                            required></textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <!-- Register button -->
+                    <div class="mb-3">
+                        <button class="btn btn-success">Register</button>
+                    </div>
+                </form>
+            <% } else { %>
+                <!-- Showing message card for user to sign in -->
+                <div class="card shadow-sm border-warning">
+                    <div class="card-header">Hello, there :)</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Please sign in!</h5>
+                        <p class="card-text">To register animals to this awesome shelter, you first need to sign in!</p>
+                        <a href="/login" class="card-link btn btn-primary">Sign In</a>
+                    </div>
+                </div>
+            <% } %> 
+        </div>
+    </div>
+
+    <!-- Registered animals detail -->
+    <div class="row row-cols-1 row-cols-md-1 justify-content-center">
+        <h4 class="mt-5 mb-4">
+            <i class="fa-solid fa-paw"></i>
+            &nbsp;Animals currently in custody
+        </h4>
+        <% for (let animal of shelter.animals) { %>
+            <div class="row">
+                <div class="card shadow-sm mb-3">
+                    <div class="row g-0">
+                        <div class="col-lg-4">
+                            <img id="square-img" src="<%= animal.image %>" class="card-img rounded-start" alt="...">
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fa-solid fa-paw"></i>
+                                    &nbsp;<%= animal.breed %> (<%= animal.age %> y/o)
+                                </h5>
+                                <p class="card-text">
+                                    <% if (animal.sex === 'female') { %>
+                                        <i class="fa-solid fa-venus"></i> 
+                                    <% } else { %>
+                                        <i class="fa-solid fa-mars"></i> 
+                                    <% } %> 
+                                    &nbsp;<%= animal.sex %>
+                                </p>
+                                <p class="card-text">
+                                    <i class="fa-solid fa-kit-medical"></i> 
+                                    &nbsp;Rescuded on:
+                                    <%= animal.dateRescued %>
+                                </p>
+                                <p class="card-text">
+                                    <i class="fa-solid fa-kit-medical"></i> 
+                                    &nbsp;Rescuded at:
+                                    <%= animal.locationRescued %>
+                                </p>
+                                <p class="card-text">
+                                    <%= animal.description %>
+                                </p>
+                                <!-- Edit and Delete btn: only shown to the signed users -->
+                                <% if (currentUser && animal.author.equals(currentUser._id)) { %>
+                                    <!-- edit btn -->
+                                    <a href="/shelters/<%= shelter._id %>/animals/<%= animal._id %>/edit" class="btn btn-primary">Edit</a>
+                                    <!-- delete btn -->
+                                    <form action="/shelters/<%= shelter._id %>/animals/<%= animal._id %>?_method=DELETE" method="POST" class="d-inline">
+                                        <button class="btn btn-danger">Delete</button>
+                                    </form>
+                                <% } %>
+                                <div class="text-muted font-medium pt-3"><em>Posted by. <%= animal.author.username %></em></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Map -->
+    <script>
+        const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+        const shelter = <%- JSON.stringify(shelter) %>
+    </script>
+    <script src="/javascripts/showPageMap.js"></script>

@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+<%- include('../partials/carousel') %>
+
+    <h3 class="mb-5 pt-5 text-center"><i class="fa-solid fa-paw"></i>&nbsp;&nbsp;All Shelters&nbsp;&nbsp;<i class="fa-solid fa-paw"></i></h3>
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-4 row-cols-sm-2 g-4 mb-4 justify-content-center">
+        <% for (let shelter of shelters) { %>
+            <div class="col">
+                <div class="card shadow">
+                    <img id="square-img" src="<%= shelter.images[0].url %>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <%= shelter.title %>
+                        </h6>
+                        <p class="card-text font-medium">
+                            <%= shelter.location %>
+                        </p>
+                        <a href="shelters/<%= shelter._id %>" class="btn btn-warning">
+                            Go to Shelter
+                        </a>
+                    </div>
+                    <!-- <div class="card-footer">
+                        <small class="text-muted">Last updated <%= //new Date(shelter.lastModified) %> </small>
+                    </div> -->
+                </div>
+            </div>
+            <% } %>
+    </div>
