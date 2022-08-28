@@ -24,9 +24,15 @@ const shelterRoute = require('./routes/shelters');
 const animalRoute = require('./routes/animals');
 const userRoute = require('./routes/users');
 
+// Using Mongo for session
+const MongoDBStore = require('connect-mongo');
+
+// Mongo atlas =====================================================
+const dbUrl = process.env.DB_URL;
 
 // Mongoose DB connection ==========================================
 mongoose.connect('mongodb://localhost:27017/animalShelter');
+// mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error:"));
@@ -47,7 +53,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Session =========================================================
+// Mongo-connect
+const store = MongoDBStore.create({
+    mongoUrl: 'mongodb://localhost:27017/animalShelter',
+    touchAfter: 24 * 60 * 60
+});
+
+store.on('error', function (err) {
+    console.log(`Session store error: ${err}`);
+});
+
 const sessionConfig = {
+    store,
+    name: 'session',
     secret: 'thisshouldbeabettersecret',
     resave: false,
     saveUninitialized: true,
