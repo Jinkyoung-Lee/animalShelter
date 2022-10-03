@@ -31,8 +31,8 @@ const MongoDBStore = require('connect-mongo');
 const dbUrl = process.env.DB_URL;
 
 // Mongoose DB connection ==========================================
-mongoose.connect('mongodb://localhost:27017/animalShelter');
-// mongoose.connect(dbUrl);
+// mongoose.connect('mongodb://localhost:27017/animalShelter');
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error:"));
@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Session =========================================================
 // Mongo-connect
 const store = MongoDBStore.create({
-    mongoUrl: 'mongodb://localhost:27017/animalShelter',
+    mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60
 });
 
